@@ -81,11 +81,11 @@ login_step() {
 
 clearance_step() {
     local why login
-    if why=$(gh api "repos/$REPO" --jq .full_name 2>&1 </dev/null); then
+    if why=$(gh api "repos/$REPO" --jq .full_name 2>&1 >/dev/null </dev/null); then
         ok "GitHub: this account can read $REPO"
         return 0
     fi
-    login=$(gh api user --jq .login </dev/null 2>/dev/null)
+    login=$(gh api user --jq .login </dev/null 2>/dev/null) || login=
     stop "The GitHub account gh is logged in with, ${login:-(unknown)}, cannot read $REPO (gh said: $(say "$why" | head -n 1)). Ask whoever invited you to give ${login:-that account} access, then run this again."
 }
 
